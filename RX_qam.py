@@ -15,7 +15,7 @@ from qam_fine_sync import qam_fine_sync
 # ============================================================================
 M = 16  # Modulation Index
 OF = 2  # Oversampling Factor
-debug_level = 0  # flag for plot details 
+debug_level = 1  # flag for plot details 
 # For qam
 
 if M == 16:
@@ -96,10 +96,7 @@ while True:
     correlation = np.correlate(fine_sync, header_complex_for_corr, mode='valid')
     
     
-    # Pikleri gücüne göre sırala (Opsiyonel: En güçlü ama geçerli olanı al)
-    # Veya sadece sırayla bak.
-    # Buffer'ın ortasındaki paketleri tercih etmek (preamble etkisi için) daha iyidir.
-    ii=0
+    # Pikleri gücüne göre sırala (En güçlü ama geçerli olanı al)
     while True:
         best_peak_idx = np.argmax(np.abs(correlation)) 
         if np.abs(correlation[best_peak_idx]) < 2.0:
@@ -108,11 +105,12 @@ while True:
         potential_end = best_peak_idx + len_msg
         # 1. Kural: Paket buffer dışına taşmamalı
         if potential_end < len(fine_sync):
-            # 2. Kural (İsteğe Bağlı): En baştaki paketi atla ki PLL ısınsın (Preamble Etkisi)
-            # Eğer peak < 500 ise (çok baştaysa) ve başka alternatif varsa atla.
+            # 2. Kural: En baştaki paketi atla ki PLL ısınsın (Preamble Etkisi)
+            # Eğer peakin indeksi (çok baştaysa) ve başka alternatif varsa atla.
             if best_peak_idx < len_msg/2:
                 correlation[best_peak_idx] = 0  # Geçersiz kıl
                 continue
+            #indexteki değer çok yüksekse (gürültü değilse) kabul et, yoksa sıradaki en iyiye bak
             if np.abs(correlation[best_peak_idx]) > 16.90:
                 correlation[best_peak_idx] = 0
                 continue                
@@ -180,28 +178,29 @@ while True:
         axes[0,2].axis('equal')
 
         axes[1,2].scatter(np.real(matched[-int(num_samples/2):]), np.imag(matched[-int(num_samples/2):]), alpha=0.5, s=1)
-        axes[1,2].set_title("2 Matched")
+        axes[1,2].scatter(np.real(time_sync[-int(num_samples/2):]), np.imag(time_sync[-int(num_samples/2):]), alpha=0.5, s=1,color="orange")
+        axes[1,2].set_title("2 Matched + Time Sync")
         axes[1,2].set_xlabel("Real")
         axes[1,2].set_ylabel("Imaginary")
         axes[1,2].grid(True)
         axes[1,2].axis('equal')
 
-        axes[2,2].scatter(np.real(time_sync[-int(num_samples/2):]), np.imag(time_sync[-int(num_samples/2):]), alpha=0.5, s=1)
-        axes[2,2].set_title("3 Time Sync")
+        axes[2,2].scatter(np.real(coarse_freq[-int(num_samples/2):]), np.imag(coarse_freq[-int(num_samples/2):]), alpha=0.5, s=1)
+        axes[2,2].set_title("3 Coarse Frequency Correction")
         axes[2,2].set_xlabel("Real")
         axes[2,2].set_ylabel("Imaginary")
         axes[2,2].grid(True)
         axes[2,2].axis('equal')
 
-        axes[0,3].scatter(np.real(coarse_freq[-int(num_samples/2):]), np.imag(coarse_freq[-int(num_samples/2):]), alpha=0.5, s=1)
-        axes[0,3].set_title("4 Coarse Frequency Correction")
+        axes[0,3].scatter(np.real(fine_sync[-int(num_samples/2):]), np.imag(fine_sync[-int(num_samples/2):]), alpha=0.5, s=1)
+        axes[0,3].set_title("4 Fine Sync PLL")
         axes[0,3].set_xlabel("Real")
         axes[0,3].set_ylabel("Imaginary")
         axes[0,3].grid(True)
         axes[0,3].axis('equal')
 
         axes[1,3].scatter(np.real(final_signal[-int(num_samples/2):]), np.imag(final_signal[-int(num_samples/2):]), alpha=0.5, s=1)
-        axes[1,3].set_title("5 Costas Out")
+        axes[1,3].set_title("5 Final Signal")
         axes[1,3].set_xlabel("Real")
         axes[1,3].set_ylabel("Imaginary")
         axes[1,3].grid(True)

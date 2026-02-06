@@ -9,7 +9,7 @@ from coarse_frequency_correction import coarse_frequency_correction
 # ============================================================================
 # Initialize Simulation
 # ============================================================================
-len_msg = 500  # Message Length
+len_msg = 10000  # Message Length
 M = 8  # Modulation Index
 OF = 2  # Oversampling Factor
 debug_level = 1  # flag for plot details 

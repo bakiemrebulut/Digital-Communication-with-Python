@@ -2,6 +2,8 @@
 
 Signal processing simulations for QAM/DPSK transmission and reception. The project contains Python implementations of key synchronization and correction loops (timing, carrier recovery, and decision-directed loops) plus TX/RX demo scripts.
 
+Note: This project is under construction and intended for educational purposes.
+
 ## Contents
 
 - TX scripts: `TX_qam.py`, `TX_dpsk.py`
@@ -17,7 +19,6 @@ Signal processing simulations for QAM/DPSK transmission and reception. The proje
   - `rcosdesign_custom.py`
   - `psk_code.py`
   - `qam.py`
-- Backup reference code is in `backup/`.
 
 ## Requirements
 
@@ -39,6 +40,16 @@ Run DPSK TX/RX:
 - `python TX_dpsk.py`
 - `python RX_dpsk.py`
 
+## Demo outputs
+
+QAM RX demo output (constellation and synchronization behavior):
+
+![QAM demo output](extras/qam_demo.png)
+
+DPSK RX demo output (phase tracking and symbol decisions):
+
+![DPSK demo output](extras/dpsk_demo.png)
+
 ## Notes
 
 - The scripts are intended to be executed from the project root folder.
@@ -47,3 +58,4 @@ Run DPSK TX/RX:
 
 - If a script fails, verify your Python version and installed dependencies.
 - If plots do not appear, ensure your Matplotlib backend is configured correctly.
+
