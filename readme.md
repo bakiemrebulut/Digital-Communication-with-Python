@@ -107,6 +107,7 @@ Parameters used for this demo output (from [RX_dpsk.py](RX_dpsk.py)):
 ## Notes
 
 - The scripts are intended to be executed from the project root folder.
+- Update the USRP serial numbers in the TX/RX scripts to match your hardware before running.
 
 ## Troubleshooting
 
