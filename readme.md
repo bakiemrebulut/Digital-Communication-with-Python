@@ -1,6 +1,7 @@
 # python_sim
 
 Signal processing simulations for QAM/DPSK transmission and reception. The project contains Python implementations of key synchronization and correction loops (timing, carrier recovery, and decision-directed loops) plus TX/RX demo scripts.
+These demo scripts were developed and tested with the USRP B210 software-defined radio.
 
 Note: This project is under construction and intended for educational purposes.
 
@@ -22,8 +23,9 @@ Note: This project is under construction and intended for educational purposes.
 
 ## Requirements
 
-- Python 3.8+
+- Python 3.12
 - Common scientific stack (NumPy, SciPy, Matplotlib). If these are missing, install them with your preferred package manager.
+- USRP UHD driver and library.
 
 ## Quick start
 
